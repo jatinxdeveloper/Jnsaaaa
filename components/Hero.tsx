@@ -1,138 +1,357 @@
 "use client";
 
+import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
-import { ArrowDown, ArrowUpRight } from "lucide-react";
+import Link from "next/link";
+import { ArrowRight, Building2, Phone, Recycle, Sparkles } from "lucide-react";
+
+interface FloatingItemConfig {
+  id: string;
+  imageSrc: string;
+  alt: string;
+  className: string;
+  floatDuration: number;
+  initialRotate: number;
+  baseX: number;
+  baseY: number;
+  ampX: number;
+  ampY: number;
+  speedMultiplier: number;
+}
+
+const leftItems: FloatingItemConfig[] = [
+  {
+    id: "l1",
+    imageSrc: "/images/card-electronic-scrap.jpg",
+    alt: "Electronic Scrap PCB",
+    className: "w-24 h-24 sm:w-28 sm:h-28",
+    floatDuration: 2.8,
+    initialRotate: -8,
+    baseX: 0,
+    baseY: 0,
+    ampX: 18,
+    ampY: 28,
+    speedMultiplier: 1.4,
+  },
+  {
+    id: "l2",
+    imageSrc: "/images/card-electrical-components.jpg",
+    alt: "Electric Motors & Equipment",
+    className: "w-28 h-22 sm:w-32 sm:h-24 ml-6",
+    floatDuration: 3.2,
+    initialRotate: 5,
+    baseX: 15,
+    baseY: 0,
+    ampX: 24,
+    ampY: -32,
+    speedMultiplier: 1.2,
+  },
+  {
+    id: "l3",
+    imageSrc: "/images/card-copper-metal.jpg",
+    alt: "Recyclable Copper Materials",
+    className: "w-26 h-26 sm:w-30 sm:h-30",
+    floatDuration: 2.5,
+    initialRotate: -14,
+    baseX: -5,
+    baseY: 0,
+    ampX: 20,
+    ampY: 26,
+    speedMultiplier: 1.5,
+  },
+];
+
+const rightItems: FloatingItemConfig[] = [
+  {
+    id: "r1",
+    imageSrc: "/images/copper-metal.jpg",
+    alt: "Copper metal ingot",
+    className: "w-24 h-24 sm:w-28 sm:h-28",
+    floatDuration: 2.9,
+    initialRotate: 14,
+    baseX: 0,
+    baseY: 0,
+    ampX: -20,
+    ampY: -26,
+    speedMultiplier: 1.3,
+  },
+  {
+    id: "r2",
+    imageSrc: "/images/card-industrial-parts.jpg",
+    alt: "Machinery gears and components",
+    className: "w-28 h-26 sm:w-32 sm:h-28 mr-4",
+    floatDuration: 3.4,
+    initialRotate: -8,
+    baseX: -10,
+    baseY: 0,
+    ampX: -26,
+    ampY: 34,
+    speedMultiplier: 1.1,
+  },
+  {
+    id: "r3",
+    imageSrc: "/images/card-industrial-scrap.jpg",
+    alt: "Cast metal parts",
+    className: "w-26 h-26 sm:w-30 sm:h-30",
+    floatDuration: 2.6,
+    initialRotate: 8,
+    baseX: 5,
+    baseY: 0,
+    ampX: -18,
+    ampY: -28,
+    speedMultiplier: 1.45,
+  },
+];
+
+// Completely unconstrained single floating item with high-speed ambient physics + rapid cursor repulsion
+function UnconstrainedFloatingItem({ item }: { item: FloatingItemConfig }) {
+  const itemRef = useRef<HTMLDivElement>(null);
+  const animFrameRef = useRef<number | null>(null);
+
+  // Physical coordinates
+  const currentPos = useRef({ x: 0, y: 0, rot: item.initialRotate });
+  const repulsionForce = useRef({ x: 0, y: 0 });
+  const timeRef = useRef(0);
+
+  useEffect(() => {
+    timeRef.current = Math.random() * 100;
+    const el = itemRef.current;
+    if (!el) return;
+
+    // Fast mouse repulsion tracking
+    const handleMouseMove = (e: MouseEvent) => {
+      const rect = el.getBoundingClientRect();
+      const itemCenterX = rect.left + rect.width / 2;
+      const itemCenterY = rect.top + rect.height / 2;
+
+      const deltaX = e.clientX - itemCenterX;
+      const deltaY = e.clientY - itemCenterY;
+      const distance = Math.hypot(deltaX, deltaY);
+
+      const triggerRadius = 260; // Wide interactive detection zone
+
+      if (distance < triggerRadius && distance > 0) {
+        // High velocity repulsion pushing directly away from mouse
+        const intensity = Math.pow((triggerRadius - distance) / triggerRadius, 1.2);
+        const pushDist = intensity * 160; // Far push distance
+        repulsionForce.current.x = -(deltaX / distance) * pushDist;
+        repulsionForce.current.y = -(deltaY / distance) * pushDist;
+      } else {
+        // Smoothly decay repulsion
+        repulsionForce.current.x *= 0.88;
+        repulsionForce.current.y *= 0.88;
+      }
+    };
+
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+
+    // 60FPS continuous fluid ambient motion loop
+    let lastTime = performance.now();
+    const animate = (now: number) => {
+      const delta = (now - lastTime) / 1000;
+      lastTime = now;
+
+      timeRef.current += delta * item.speedMultiplier * 2.2; // Faster ambient speed
+
+      // Continuous harmonic floating motion
+      const ambientX = Math.sin(timeRef.current) * item.ampX + Math.cos(timeRef.current * 0.7) * (item.ampX * 0.4);
+      const ambientY = Math.cos(timeRef.current * 1.1) * item.ampY + Math.sin(timeRef.current * 0.8) * (item.ampY * 0.3);
+      const ambientRot = item.initialRotate + Math.sin(timeRef.current * 0.9) * 7;
+
+      // Combine ambient orbit + fast cursor push with spring physics
+      const targetX = ambientX + repulsionForce.current.x;
+      const targetY = ambientY + repulsionForce.current.y;
+      const targetRot = ambientRot + (repulsionForce.current.x * 0.12);
+
+      // Smooth interpolation (faster response on push, graceful spring back)
+      const lerpFactor = repulsionForce.current.x !== 0 ? 0.22 : 0.08;
+      currentPos.current.x += (targetX - currentPos.current.x) * lerpFactor;
+      currentPos.current.y += (targetY - currentPos.current.y) * lerpFactor;
+      currentPos.current.rot += (targetRot - currentPos.current.rot) * lerpFactor;
+
+      if (el) {
+        el.style.transform = `translate3d(${currentPos.current.x.toFixed(2)}px, ${currentPos.current.y.toFixed(2)}px, 0px) rotate(${currentPos.current.rot.toFixed(2)}deg)`;
+      }
+
+      animFrameRef.current = requestAnimationFrame(animate);
+    };
+
+    animFrameRef.current = requestAnimationFrame(animate);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      if (animFrameRef.current) {
+        cancelAnimationFrame(animFrameRef.current);
+      }
+    };
+  }, [item]);
+
+  return (
+    <div
+      ref={itemRef}
+      className={`relative cursor-pointer select-none will-change-transform group ${item.className}`}
+      style={{
+        transform: `translate3d(0px, 0px, 0px) rotate(${item.initialRotate}deg)`,
+      }}
+    >
+      {/* Frameless floating image entity with direct drop shadow */}
+      <div className="relative w-full h-full min-h-[85px] rounded-2xl overflow-hidden shadow-2xl border border-white/80 bg-white/40 backdrop-blur-sm transition-shadow duration-300 group-hover:shadow-[0_20px_50px_rgba(37,162,68,0.25)]">
+        <Image
+          src={item.imageSrc}
+          alt={item.alt}
+          fill
+          className="object-cover object-center group-hover:scale-110 transition-transform duration-300 pointer-events-none"
+          sizes="160px"
+        />
+      </div>
+    </div>
+  );
+}
 
 export default function Hero() {
+  const [businessName, setBusinessName] = useState("");
+  const [contactInfo, setContactInfo] = useState("");
+
+  const handleQuickLead = (e: React.FormEvent) => {
+    e.preventDefault();
+    const contactSection = document.getElementById("contact");
+    if (contactSection) {
+      const nameInput = document.getElementById("fullName") as HTMLInputElement;
+      const compInput = document.getElementById("companyName") as HTMLInputElement;
+      const phoneInput = document.getElementById("phone") as HTMLInputElement;
+      if (compInput && businessName) compInput.value = businessName;
+      if (nameInput && businessName) nameInput.value = businessName;
+      if (phoneInput && contactInfo) phoneInput.value = contactInfo;
+      contactSection.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <section
       id="home"
-      className="relative min-h-[90vh] sm:min-h-[92vh] lg:min-h-screen flex items-center justify-center bg-[#032b17] overflow-hidden pt-28 pb-16 sm:py-24 lg:py-0"
+      className="relative min-h-screen bg-[#f7faf8] text-[#141916] overflow-hidden pt-28 pb-16 sm:pt-32 sm:pb-20 flex flex-col justify-between"
     >
-      {/* Background Hero Image with refined gradient treatment */}
-      <div className="absolute inset-0 z-0">
-        <Image
-          src="/images/hero-industrial.jpg"
-          alt="JNSAAAA Industrial Recycling & Material Recovery Facility"
-          fill
-          className="object-cover object-center brightness-[0.42] contrast-[1.08] scale-105 transition-transform duration-1000 ease-out"
-          priority
-        />
-        {/* Editorial gradient overlays */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#01130a]/95 via-[#032b17]/85 to-[#01130a]/70 lg:to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#01130a] via-transparent to-black/50" />
-        <div className="absolute inset-0 industrial-grid-dark opacity-30" />
-      </div>
+      {/* Background Soft Green Glow Accents */}
+      <div className="absolute top-0 left-0 w-[350px] h-[350px] sm:w-[500px] sm:h-[500px] bg-[#25a244]/12 blur-[120px] rounded-full pointer-events-none -translate-x-1/2 -translate-y-1/2" />
+      <div className="absolute top-0 right-0 w-[350px] h-[350px] sm:w-[500px] sm:h-[500px] bg-[#25a244]/12 blur-[120px] rounded-full pointer-events-none translate-x-1/2 -translate-y-1/2" />
+      <div className="absolute inset-0 industrial-grid opacity-30 pointer-events-none" />
 
-      {/* Hero Content Container */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
+      {/* Main Hero Container */}
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full my-auto">
+        
+        {/* Floating Category Elements - Left & Right (Desktop & Large Screens) */}
+        <div className="relative">
           
-          {/* Main Headline Column */}
-          <div className="lg:col-span-8 text-white space-y-6 sm:space-y-8">
+          {/* Left Floating Items - Inset with healthy x-padding */}
+          <div className="hidden xl:flex flex-col gap-10 absolute left-0 lg:left-4 xl:left-8 top-1/2 -translate-y-1/2 w-36 pointer-events-auto select-none z-20">
+            {leftItems.map((item) => (
+              <UnconstrainedFloatingItem key={item.id} item={item} />
+            ))}
+          </div>
+
+          {/* Right Floating Items - Inset with healthy x-padding */}
+          <div className="hidden xl:flex flex-col gap-10 absolute right-0 lg:right-4 xl:right-8 top-1/2 -translate-y-1/2 w-36 pointer-events-auto select-none items-end z-20">
+            {rightItems.map((item) => (
+              <UnconstrainedFloatingItem key={item.id} item={item} />
+            ))}
+          </div>
+
+          {/* Main Editorial Content */}
+          <div className="text-center max-w-4xl mx-auto space-y-5 sm:space-y-6">
             
-            {/* Main Headline with fluid responsive typography */}
-            <h1 className="font-heading text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white leading-[1.1] sm:leading-[1.08]">
-              Industrial Materials. <br className="hidden sm:inline" />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-100 to-[#25a244]">
-                Smarter Connections.
-              </span>
+            {/* Title with matching typographic hierarchy */}
+            <h1 className="font-heading text-3xl sm:text-5xl md:text-6xl lg:text-[64px] font-bold tracking-tight text-[#141916] leading-[1.12]">
+              Industrial Recycling. <br />
+              <span className="text-[#141916]">Smarter Material Recovery.</span>
             </h1>
 
             {/* Supporting Subtext */}
-            <p className="text-base sm:text-lg md:text-xl text-gray-300 max-w-2xl font-light leading-relaxed">
-              Connecting recyclable materials, machinery components, and businesses through practical material recovery and onward supply.
+            <p className="text-sm sm:text-base md:text-lg text-[#525954] max-w-2xl mx-auto font-normal leading-relaxed">
+              Responsible sourcing and dependable recovery channels for recyclable metals, electronic scrap and machinery components.
             </p>
 
-            {/* CTA Action Buttons */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 sm:gap-4 pt-2">
-              <a
-                href="#contact"
-                className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg bg-[#25a244] hover:bg-[#1e8236] text-white font-semibold text-sm sm:text-base transition-all duration-200 shadow-lg shadow-[#25a244]/25 hover:shadow-xl hover:shadow-[#25a244]/35 hover:-translate-y-0.5 group"
-              >
-                <span>Discuss a Requirement</span>
-                <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </a>
+            {/* Interactive Quick Lead Bar with Outer Pill Ring */}
+            <div className="pt-2 sm:pt-4 max-w-3xl mx-auto">
+              <div className="relative p-2 sm:p-3 rounded-full border-2 border-[#bbf7d0]/80 bg-[#e8f5e9]/30 shadow-sm backdrop-blur-sm">
+                
+                {/* Floating Top Pill Tag */}
+                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-0.5 rounded-full bg-[#c7f9cc] border border-[#86efac] text-[#032b17] text-xs font-semibold tracking-wide shadow-xs">
+                  Tell Us What You Need to Recycle
+                </div>
 
-              <a
-                href="#materials"
-                className="inline-flex items-center justify-center gap-2 px-6 sm:px-7 py-3.5 sm:py-4 rounded-lg bg-white/10 hover:bg-white/15 text-white font-medium text-sm sm:text-base border border-white/20 backdrop-blur-md transition-all duration-200 hover:-translate-y-0.5"
-              >
-                <span>Explore Materials</span>
-                <ArrowDown className="w-4 h-4 text-[#38b000]" />
-              </a>
+                {/* Inner Form with two input capsules & submit circle */}
+                <form
+                  onSubmit={handleQuickLead}
+                  className="bg-white rounded-full p-1.5 sm:p-2 border border-gray-200/90 shadow-sm flex flex-col sm:flex-row items-center gap-2"
+                >
+                  {/* Business Name Input */}
+                  <div className="flex-1 w-full flex items-center gap-3 px-4 py-2.5 rounded-full border border-gray-100 focus-within:border-[#25a244] bg-[#fafcfa] transition-colors">
+                    <Building2 className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                    <input
+                      type="text"
+                      value={businessName}
+                      onChange={(e) => setBusinessName(e.target.value)}
+                      placeholder="Your business name"
+                      className="w-full bg-transparent text-xs sm:text-sm text-gray-800 placeholder-gray-400 focus:outline-none"
+                    />
+                  </div>
+
+                  {/* Phone / Email Input */}
+                  <div className="flex-1 w-full flex items-center gap-3 px-4 py-2.5 rounded-full border border-gray-100 focus-within:border-[#25a244] bg-[#fafcfa] transition-colors">
+                    <Phone className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                    <input
+                      type="text"
+                      value={contactInfo}
+                      onChange={(e) => setContactInfo(e.target.value)}
+                      placeholder="Phone number or email"
+                      className="w-full bg-transparent text-xs sm:text-sm text-gray-800 placeholder-gray-400 focus:outline-none"
+                    />
+                  </div>
+
+                  {/* Submit Circle Button */}
+                  <button
+                    type="submit"
+                    className="w-full sm:w-11 h-11 rounded-full bg-[#032b17] hover:bg-[#25a244] text-white flex items-center justify-center transition-all duration-200 shadow-md group flex-shrink-0"
+                    aria-label="Submit lead and discuss requirements"
+                  >
+                    <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-0.5" />
+                  </button>
+                </form>
+
+              </div>
+
+              {/* Sub-lead footnote */}
+              <p className="text-[11px] sm:text-xs text-[#737873] mt-3 font-medium">
+                For industrial suppliers, businesses and material partners
+              </p>
             </div>
 
-            {/* Quick Trust Attributes (Factual without fake stats) */}
-            <div className="pt-6 border-t border-white/10 grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 text-xs sm:text-sm text-gray-300">
-              <div className="flex items-center gap-2.5">
-                <div className="w-1.5 h-1.5 rounded-full bg-[#25a244] flex-shrink-0" />
-                <span className="font-medium text-gray-200">Registered Indian Pvt. Ltd.</span>
-              </div>
-              <div className="flex items-center gap-2.5">
-                <div className="w-1.5 h-1.5 rounded-full bg-[#25a244] flex-shrink-0" />
-                <span className="font-medium text-gray-200">B2B Material Recovery</span>
-              </div>
-              <div className="flex items-center gap-2.5">
-                <div className="w-1.5 h-1.5 rounded-full bg-[#25a244] flex-shrink-0" />
-                <span className="font-medium text-gray-200">Vendor & Buyer Network</span>
-              </div>
-            </div>
-
-          </div>
-
-          {/* Right Card / Visual Showcase Column */}
-          <div className="hidden lg:block lg:col-span-4">
-            <div className="relative rounded-2xl overflow-hidden p-6 bg-gradient-to-b from-white/10 to-white/5 border border-white/15 backdrop-blur-xl shadow-2xl text-white space-y-5">
-              <div className="flex items-center justify-between border-b border-white/10 pb-4">
-                <div className="text-xs uppercase tracking-wider text-gray-300 font-semibold">
-                  Core Operation
-                </div>
-                <span className="text-xs px-2.5 py-0.5 rounded bg-[#25a244]/30 text-[#38b000] border border-[#38b000]/40 font-mono">
-                  B2B
-                </span>
-              </div>
-
-              <div className="space-y-3">
-                <h3 className="font-heading text-lg font-semibold text-white">
-                  Bridging Material Supply & Industry Need
-                </h3>
-                <p className="text-xs text-gray-300 leading-relaxed">
-                  We facilitate direct channelisation between smaller collection vendors and structured commercial buyers across industrial corridors.
-                </p>
-              </div>
-
-              <div className="space-y-2 pt-2 text-xs">
-                <div className="p-3 rounded-lg bg-black/30 border border-white/5 flex items-center justify-between">
-                  <span className="text-gray-300">Electronic Scrap & PCBs</span>
-                  <span className="text-[#38b000] font-mono">01</span>
-                </div>
-                <div className="p-3 rounded-lg bg-black/30 border border-white/5 flex items-center justify-between">
-                  <span className="text-gray-300">Used Electrical Motors</span>
-                  <span className="text-[#38b000] font-mono">02</span>
-                </div>
-                <div className="p-3 rounded-lg bg-black/30 border border-white/5 flex items-center justify-between">
-                  <span className="text-gray-300">Copper Wires & Metals</span>
-                  <span className="text-[#38b000] font-mono">03</span>
-                </div>
-                <div className="p-3 rounded-lg bg-black/30 border border-white/5 flex items-center justify-between">
-                  <span className="text-gray-300">Industrial Machinery Parts</span>
-                  <span className="text-[#38b000] font-mono">04</span>
-                </div>
-              </div>
-
-              <div className="pt-2 text-[11px] text-gray-400 border-t border-white/10 flex items-center justify-between">
-                <span>Muradnagar, Ghaziabad</span>
-                <span className="text-gray-300 font-medium">JNSAAAA RECYCLE PVT LTD</span>
-              </div>
-            </div>
           </div>
 
         </div>
+
+
+
+        {/* Bottom Floating Pill Banner */}
+        <div className="mt-8 flex justify-center">
+          <div className="inline-flex items-center gap-3 sm:gap-4 px-4 sm:px-6 py-2.5 rounded-full bg-[#032b17] text-white text-xs sm:text-sm shadow-lg border border-[#25a244]/40">
+            <div className="w-6 h-6 rounded-full bg-[#25a244] text-white flex items-center justify-center flex-shrink-0">
+              <Sparkles className="w-3.5 h-3.5" />
+            </div>
+            <span className="text-gray-200 font-medium">
+              Built on responsible sourcing and long-term business relationships
+            </span>
+            <a
+              href="#contact"
+              className="hidden sm:inline-flex items-center gap-1 text-[#86efac] font-bold hover:underline ml-2"
+            >
+              <span>Partner with JNSAAAA &rarr;</span>
+            </a>
+          </div>
+        </div>
+
       </div>
 
-      {/* Decorative Bottom Border Accent */}
-      <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-transparent via-[#25a244] to-transparent opacity-80" />
     </section>
   );
 }
