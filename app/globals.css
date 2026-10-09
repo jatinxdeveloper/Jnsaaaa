@@ -1,26 +1,102 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --forest-green: #032b17;
+    --forest-dark: #021a0e;
+    --forest-deep: #01130a;
+    --leaf-green: #25a244;
+    --leaf-bright: #38b000;
+    --leaf-light: #e8f5e9;
+    --leaf-emerald: #10b981;
+    --industrial-charcoal: #121814;
+    --industrial-gray: #4b5563;
+    --industrial-light: #f4f6f4;
+    --industrial-border: #e2e8e4;
+    --accent-gold: #c59b27;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    color-scheme: light;
+  }
+
+  body {
+    background-color: #ffffff;
+    color: #121814;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    overflow-x: hidden;
+    selection-background-color: #25a244;
+    selection-color: #ffffff;
+  }
+
+  ::selection {
+    background-color: #25a244;
+    color: #ffffff;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Custom editorial utility classes */
+.bg-forest-950 {
+  background-color: #01130a;
+}
+.bg-forest-900 {
+  background-color: #032b17;
+}
+.bg-forest-800 {
+  background-color: #064023;
+}
+.bg-leaf-500 {
+  background-color: #25a244;
+}
+.bg-leaf-600 {
+  background-color: #1e8236;
+}
+.text-forest-900 {
+  color: #032b17;
+}
+.text-leaf-500 {
+  color: #25a244;
+}
+.text-leaf-400 {
+  color: #38b000;
+}
+.border-forest-900\/20 {
+  border-color: rgba(3, 43, 23, 0.2);
+}
+.border-leaf-500\/30 {
+  border-color: rgba(37, 162, 68, 0.3);
+}
+
+/* Smooth reveal clip-path animations */
+@keyframes clipReveal {
+  from {
+    clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%);
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.reveal-in {
+  animation: clipReveal 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Subtle grid texture overlay */
+.industrial-grid {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+}
+
+.industrial-grid-dark {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
 }
