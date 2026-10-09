@@ -5,7 +5,7 @@ import { CheckCircle2, ArrowRight, Network, Layers, RefreshCw } from "lucide-rea
 
 export default function Introduction() {
   return (
-    <section className="py-20 md:py-28 bg-[#fbfdfb] text-[#121814] relative overflow-hidden">
+    <section className="py-12 md:py-16 bg-[#fbfdfb] text-[#121814] relative overflow-hidden">
       {/* Subtle background grid pattern */}
       <div className="absolute inset-0 industrial-grid opacity-60 pointer-events-none" />
 
@@ -54,7 +54,7 @@ export default function Introduction() {
                 <span>Our Philosophy</span>
               </div>
               
-              <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#032b17] leading-[1.15]">
+              <h2 className="font-heading font-bold text-[35px] leading-[36px] tracking-tight text-[#032b17]">
                 Resources Deserve a Better Next Step.
               </h2>
             </div>

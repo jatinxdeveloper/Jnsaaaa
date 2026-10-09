@@ -5,16 +5,16 @@ import { Building2, MapPin, FileCheck2, ShieldCheck, Scale, CheckCircle2 } from 
 
 export default function About() {
   return (
-    <section id="about" className="py-24 md:py-32 bg-white text-[#121814] relative border-t border-gray-100">
+    <section id="about" className="py-12 md:py-16 bg-white text-[#121814] relative border-t border-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Top Header */}
-        <div className="max-w-3xl mb-16 space-y-4">
+        <div className="max-w-3xl mb-10 space-y-3">
           <div className="inline-flex items-center gap-2 text-xs uppercase font-bold tracking-widest text-[#25a244]">
             <span className="w-6 h-[2px] bg-[#25a244]" />
             <span>Company Profile</span>
           </div>
-          <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#032b17]">
+          <h2 className="font-heading text-[35px] leading-[36px] font-bold tracking-tight text-[#032b17]">
             A Practical Approach to Industrial Material Recovery.
           </h2>
           <p className="text-base sm:text-lg text-gray-700 font-light leading-relaxed">

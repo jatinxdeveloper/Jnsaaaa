@@ -36,17 +36,17 @@ const steps: StepProps[] = [
 
 export default function OurApproach() {
   return (
-    <section id="approach" className="py-24 md:py-32 bg-[#f4f7f4] text-[#121814] relative">
+    <section id="approach" className="py-12 md:py-16 bg-[#f4f7f4] text-[#121814] relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-20 space-y-4">
+        <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
           <div className="inline-flex items-center gap-2 text-xs uppercase font-bold tracking-widest text-[#25a244]">
             <span className="w-6 h-[2px] bg-[#25a244]" />
             <span>Structured Process</span>
             <span className="w-6 h-[2px] bg-[#25a244]" />
           </div>
-          <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#032b17]">
+          <h2 className="font-heading text-[35px] leading-[36px] font-bold tracking-tight text-[#032b17]">
             From Material to Opportunity.
           </h2>
           <p className="text-base sm:text-lg text-gray-600 font-light">

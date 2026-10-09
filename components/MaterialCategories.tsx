@@ -156,7 +156,7 @@ export default function MaterialCategories() {
     <section
       id="materials"
       ref={sectionRef}
-      className="py-16 md:py-24 bg-white text-[#202522] relative"
+      className="py-10 md:py-14 bg-white text-[#202522] relative"
     >
       {/* Boxed Fit Container - Max Width 7XL with premium framing */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -172,7 +172,7 @@ export default function MaterialCategories() {
                   <span className="w-6 h-[2px] bg-[#234B3A]" />
                   <span>MATERIALS WE HANDLE</span>
                 </div>
-                <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#202522] leading-[1.12]">
+                <h2 className="font-heading text-[35px] leading-[36px] font-bold tracking-tight text-[#202522]">
                   From E-Waste to Heavy Machinery.
                 </h2>
                 <p className="text-sm sm:text-base text-[#737873] font-normal max-w-2xl leading-relaxed">

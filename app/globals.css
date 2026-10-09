@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+@theme {
+  --font-sans: var(--font-urbanist), sans-serif;
+  --font-heading: var(--font-urbanist), sans-serif;
+}
+
 @layer base {
   :root {
     --forest-green: #032b17;

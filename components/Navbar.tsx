@@ -37,38 +37,33 @@ export default function Navbar() {
     { name: "About Us", href: "#about" },
     { name: "Materials We Handle", href: "#materials" },
     { name: "Our Process", href: "#approach" },
-    { name: "Contact", href: "#contact" },
   ];
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? "bg-white/95 backdrop-blur-md shadow-sm py-3 border-b border-gray-100"
-          : "bg-transparent py-4 sm:py-5"
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
+        ? "bg-white/95 backdrop-blur-md shadow-sm py-3 border-b border-gray-100"
+        : "bg-transparent py-4 sm:py-5"
+        }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
-          
-          {/* Brand Logo Lockup */}
+
+          {/* Horizontal Brand Logo */}
           <Link
             href="#home"
-            className="flex items-center gap-2.5 sm:gap-3 group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#25a244] rounded-xl"
+            className="flex items-center group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#25a244] rounded-lg py-1"
             aria-label="JNSAAAA Recycle Private Limited Home"
           >
-            <div className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-xl overflow-hidden bg-white p-1 shadow-sm border border-gray-200/80 flex items-center justify-center transition-transform group-hover:scale-105 flex-shrink-0">
+            <div className="relative h-10 sm:h-11 md:h-12 w-48 sm:w-52 md:w-56 transition-transform duration-200 group-hover:scale-[1.02]">
               <Image
-                src="/images/jnsaaaa-logo.png"
-                alt="JNSAAAA RECYCLE PRIVATE LIMITED"
+                src="/images/jnsaaaa-brand-logo-transparent.png"
+                alt="JNSAAAA Recycle Private Limited"
                 fill
-                className="object-contain p-0.5"
+                className="object-contain object-left"
                 priority
               />
             </div>
-            <span className="font-heading font-extrabold text-xl sm:text-2xl text-[#032b17] tracking-tight">
-              JNSAAAA
-            </span>
           </Link>
 
           {/* Desktop Navigation Links */}
@@ -87,10 +82,10 @@ export default function Navbar() {
           {/* Desktop Action CTA Pill */}
           <div className="hidden sm:flex items-center">
             <a
-              href="#contact"
+              href="#materials"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#032b17] hover:bg-[#25a244] text-white text-xs sm:text-sm font-semibold transition-all duration-200 shadow-sm group"
             >
-              <span>Discuss Your Requirements</span>
+              <span>Explore Materials</span>
               <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
             </a>
           </div>
@@ -129,11 +124,11 @@ export default function Navbar() {
 
             <div className="pt-4 border-t border-gray-100 flex flex-col gap-3">
               <a
-                href="#contact"
+                href="#materials"
                 onClick={() => setMobileMenuOpen(false)}
                 className="w-full flex items-center justify-center gap-2 px-5 py-3.5 rounded-full bg-[#032b17] text-white font-semibold text-sm text-center hover:bg-[#25a244] transition-colors shadow-sm"
               >
-                <span>Discuss Your Requirements</span>
+                <span>Explore Materials</span>
                 <ArrowRight className="w-4 h-4" />
               </a>
             </div>

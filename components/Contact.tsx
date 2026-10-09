@@ -110,7 +110,7 @@ export default function Contact() {
             <span className="w-6 h-[2px] bg-[#38b000]" />
             <span>Commercial Inquiries</span>
           </div>
-          <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white leading-tight">
+          <h2 className="font-heading text-[35px] leading-[36px] font-bold tracking-tight text-white">
             Have Material to Supply or a Requirement to Discuss?
           </h2>
           <p className="text-base sm:text-lg text-gray-300 font-light leading-relaxed">

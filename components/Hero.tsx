@@ -22,9 +22,9 @@ interface FloatingItemConfig {
 const leftItems: FloatingItemConfig[] = [
   {
     id: "l1",
-    imageSrc: "/images/card-electronic-scrap.jpg",
-    alt: "Electronic Scrap PCB",
-    className: "w-24 h-24 sm:w-28 sm:h-28",
+    imageSrc: "/images/board.png",
+    alt: "Electronic Circuit Board",
+    className: "w-28 h-28 sm:w-36 sm:h-36 -rotate-6",
     floatDuration: 2.8,
     initialRotate: -8,
     baseX: 0,
@@ -35,25 +35,25 @@ const leftItems: FloatingItemConfig[] = [
   },
   {
     id: "l2",
-    imageSrc: "/images/card-electrical-components.jpg",
-    alt: "Electric Motors & Equipment",
-    className: "w-28 h-22 sm:w-32 sm:h-24 ml-6",
+    imageSrc: "/images/screw-part.png",
+    alt: "Industrial Gears & Machinery Parts",
+    className: "w-24 h-24 sm:w-28 sm:h-28 ml-4 rotate-6",
     floatDuration: 3.2,
-    initialRotate: 5,
-    baseX: 15,
+    initialRotate: 6,
+    baseX: 12,
     baseY: 0,
-    ampX: 24,
-    ampY: -32,
-    speedMultiplier: 1.2,
+    ampX: 22,
+    ampY: -30,
+    speedMultiplier: 1.25,
   },
   {
     id: "l3",
-    imageSrc: "/images/card-copper-metal.jpg",
-    alt: "Recyclable Copper Materials",
-    className: "w-26 h-26 sm:w-30 sm:h-30",
+    imageSrc: "/images/screw2.png",
+    alt: "Industrial Screws and Fasteners",
+    className: "w-26 h-20 sm:w-32 sm:h-24 -rotate-12",
     floatDuration: 2.5,
-    initialRotate: -14,
-    baseX: -5,
+    initialRotate: -12,
+    baseX: -4,
     baseY: 0,
     ampX: 20,
     ampY: 26,
@@ -64,42 +64,42 @@ const leftItems: FloatingItemConfig[] = [
 const rightItems: FloatingItemConfig[] = [
   {
     id: "r1",
-    imageSrc: "/images/copper-metal.jpg",
-    alt: "Copper metal ingot",
-    className: "w-24 h-24 sm:w-28 sm:h-28",
-    floatDuration: 2.9,
-    initialRotate: 14,
+    imageSrc: "/images/spare-part.png",
+    alt: "Interlocking Industrial Gears",
+    className: "w-28 h-28 sm:w-36 sm:h-36 rotate-10",
+    floatDuration: 3.0,
+    initialRotate: 10,
     baseX: 0,
     baseY: 0,
-    ampX: -20,
-    ampY: -26,
+    ampX: -22,
+    ampY: -28,
     speedMultiplier: 1.3,
   },
   {
     id: "r2",
-    imageSrc: "/images/card-industrial-parts.jpg",
-    alt: "Machinery gears and components",
-    className: "w-28 h-26 sm:w-32 sm:h-28 mr-4",
+    imageSrc: "/images/board.png",
+    alt: "Electronic PCB Scrap Component",
+    className: "w-24 h-24 sm:w-28 sm:h-28 -rotate-12 mr-3",
     floatDuration: 3.4,
-    initialRotate: -8,
-    baseX: -10,
+    initialRotate: -12,
+    baseX: -8,
     baseY: 0,
-    ampX: -26,
-    ampY: 34,
-    speedMultiplier: 1.1,
+    ampX: -24,
+    ampY: 32,
+    speedMultiplier: 1.15,
   },
   {
     id: "r3",
-    imageSrc: "/images/card-industrial-scrap.jpg",
-    alt: "Cast metal parts",
-    className: "w-26 h-26 sm:w-30 sm:h-30",
+    imageSrc: "/images/screw-part.png",
+    alt: "Precision Industrial Gears",
+    className: "w-26 h-26 sm:w-30 sm:h-30 rotate-8",
     floatDuration: 2.6,
     initialRotate: 8,
-    baseX: 5,
+    baseX: 4,
     baseY: 0,
     ampX: -18,
-    ampY: -28,
-    speedMultiplier: 1.45,
+    ampY: -26,
+    speedMultiplier: 1.4,
   },
 ];
 
@@ -194,14 +194,15 @@ function UnconstrainedFloatingItem({ item }: { item: FloatingItemConfig }) {
         transform: `translate3d(0px, 0px, 0px) rotate(${item.initialRotate}deg)`,
       }}
     >
-      {/* Frameless floating image entity with direct drop shadow */}
-      <div className="relative w-full h-full min-h-[85px] rounded-2xl overflow-hidden shadow-2xl border border-white/80 bg-white/40 backdrop-blur-sm transition-shadow duration-300 group-hover:shadow-[0_20px_50px_rgba(37,162,68,0.25)]">
+      {/* Pure Cutout Image entity with natural drop shadow filter */}
+      <div className="relative w-full h-full min-h-[90px] drop-shadow-2xl transition-all duration-300 group-hover:scale-110 group-hover:drop-shadow-[0_25px_35px_rgba(37,162,68,0.35)]">
         <Image
           src={item.imageSrc}
           alt={item.alt}
           fill
-          className="object-cover object-center group-hover:scale-110 transition-transform duration-300 pointer-events-none"
+          className="object-contain object-center pointer-events-none"
           sizes="160px"
+          priority
         />
       </div>
     </div>
@@ -229,7 +230,7 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative min-h-screen bg-[#f7faf8] text-[#141916] overflow-hidden pt-28 pb-16 sm:pt-32 sm:pb-20 flex flex-col justify-between"
+      className="relative bg-[#f7faf8] text-[#141916] overflow-hidden pt-24 pb-6 sm:pt-28 sm:pb-8 flex flex-col justify-between"
     >
       {/* Background Soft Green Glow Accents */}
       <div className="absolute top-0 left-0 w-[350px] h-[350px] sm:w-[500px] sm:h-[500px] bg-[#25a244]/12 blur-[120px] rounded-full pointer-events-none -translate-x-1/2 -translate-y-1/2" />

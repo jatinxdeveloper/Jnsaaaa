@@ -23,7 +23,7 @@ export default function BrandStatement() {
               <span>Core Mission</span>
             </div>
 
-            <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.12]">
+            <h2 className="font-heading text-[35px] leading-[36px] font-bold tracking-tight text-white">
               Better Recovery Begins with{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#38b000] via-[#25a244] to-emerald-300">
                 Better Connections.
