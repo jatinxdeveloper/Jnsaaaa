@@ -273,20 +273,20 @@ export default function Hero() {
 
             {/* Interactive Quick Lead Bar with Outer Pill Ring */}
             <div className="pt-2 sm:pt-4 max-w-3xl mx-auto">
-              <div className="relative p-2 sm:p-3 rounded-full border-2 border-[#bbf7d0]/80 bg-[#e8f5e9]/30 shadow-sm backdrop-blur-sm">
+              <div className="relative p-2 sm:p-3 rounded-2xl sm:rounded-full border-2 border-[#bbf7d0]/80 bg-[#e8f5e9]/30 shadow-sm backdrop-blur-sm">
                 
                 {/* Floating Top Pill Tag */}
-                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-0.5 rounded-full bg-[#c7f9cc] border border-[#86efac] text-[#032b17] text-xs font-semibold tracking-wide shadow-xs">
+                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3 sm:px-4 py-0.5 rounded-full bg-[#c7f9cc] border border-[#86efac] text-[#032b17] text-[11px] sm:text-xs font-semibold tracking-wide shadow-xs whitespace-nowrap">
                   Tell Us What You Need to Recycle
                 </div>
 
                 {/* Inner Form with two input capsules & submit circle */}
                 <form
                   onSubmit={handleQuickLead}
-                  className="bg-white rounded-full p-1.5 sm:p-2 border border-gray-200/90 shadow-sm flex flex-col sm:flex-row items-center gap-2"
+                  className="bg-white rounded-xl sm:rounded-full p-1.5 sm:p-2 border border-gray-200/90 shadow-sm flex flex-col sm:flex-row items-center gap-2"
                 >
                   {/* Business Name Input */}
-                  <div className="flex-1 w-full flex items-center gap-3 px-4 py-2.5 rounded-full border border-gray-100 focus-within:border-[#25a244] bg-[#fafcfa] transition-colors">
+                  <div className="flex-1 w-full flex items-center gap-3 px-4 py-2.5 rounded-lg sm:rounded-full border border-gray-100 focus-within:border-[#25a244] bg-[#fafcfa] transition-colors">
                     <Building2 className="w-4 h-4 text-gray-400 flex-shrink-0" />
                     <input
                       type="text"
@@ -298,7 +298,7 @@ export default function Hero() {
                   </div>
 
                   {/* Phone / Email Input */}
-                  <div className="flex-1 w-full flex items-center gap-3 px-4 py-2.5 rounded-full border border-gray-100 focus-within:border-[#25a244] bg-[#fafcfa] transition-colors">
+                  <div className="flex-1 w-full flex items-center gap-3 px-4 py-2.5 rounded-lg sm:rounded-full border border-gray-100 focus-within:border-[#25a244] bg-[#fafcfa] transition-colors">
                     <Phone className="w-4 h-4 text-gray-400 flex-shrink-0" />
                     <input
                       type="text"
@@ -309,13 +309,14 @@ export default function Hero() {
                     />
                   </div>
 
-                  {/* Submit Circle Button */}
+                  {/* Submit Button */}
                   <button
                     type="submit"
-                    className="w-full sm:w-11 h-11 rounded-full bg-[#032b17] hover:bg-[#25a244] text-white flex items-center justify-center transition-all duration-200 shadow-md group flex-shrink-0"
+                    className="w-full sm:w-11 h-10 sm:h-11 rounded-lg sm:rounded-full bg-[#032b17] hover:bg-[#25a244] text-white flex items-center justify-center gap-2 text-xs sm:text-sm font-medium transition-all duration-200 shadow-md group flex-shrink-0 py-2 sm:py-0"
                     aria-label="Submit lead and discuss requirements"
                   >
-                    <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-0.5" />
+                    <span className="sm:hidden font-semibold">Get in Touch</span>
+                    <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:translate-x-0.5" />
                   </button>
                 </form>
 

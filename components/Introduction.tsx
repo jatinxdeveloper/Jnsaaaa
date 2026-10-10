@@ -17,27 +17,12 @@ export default function Introduction() {
             <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-gray-200 group">
               <div className="relative aspect-[4/3] w-full bg-gray-100">
                 <Image
-                  src="/images/industrial-materials.jpg"
-                  alt="JNSAAAA Responsible Recovery in Action - Industrial Material Assessment"
+                  src="/images/E-Waste Recycling Yard Assessment.png"
+                  alt="JNSAAAA Good Material Shouldn't Go To Waste - E-Waste Recycling Yard Assessment"
                   fill
                   className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
                   sizes="(max-width: 1024px) 100vw, 50vw"
                 />
-              </div>
-
-              {/* Inset Badge */}
-              <div className="absolute bottom-4 left-4 right-4 sm:right-auto bg-[#032b17]/95 backdrop-blur-md text-white p-4 rounded-xl border border-white/10 shadow-lg flex items-center gap-3.5">
-                <div className="w-10 h-10 rounded-lg bg-[#25a244]/20 border border-[#25a244]/40 flex items-center justify-center text-[#38b000] flex-shrink-0">
-                  <RefreshCw className="w-5 h-5" />
-                </div>
-                <div>
-                  <div className="text-xs uppercase tracking-wider text-gray-300 font-semibold">
-                    Material Assessment
-                  </div>
-                  <div className="text-sm font-bold text-white">
-                    Inspection & Onward Channelisation
-                  </div>
-                </div>
               </div>
             </div>
 

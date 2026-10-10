@@ -33,7 +33,7 @@ export default function RecyclablesPicked() {
         {/* Interactive Diagram / Central Visual Section */}
         <div className="relative max-w-3xl mx-auto my-4 sm:my-8">
           <div className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden bg-transparent group">
-            <div className="relative aspect-[16/9.2] sm:aspect-[16/9] md:aspect-[1.78/1] w-full">
+            <div className="relative aspect-[1024/574] w-full">
               <Image
                 src="/images/recyclables-picked-main.png"
                 alt="Recyclables We Pick - Paper & Cardboard, Plastic, Mixed Recyclables, Metal"
@@ -41,7 +41,7 @@ export default function RecyclablesPicked() {
                 quality={100}
                 unoptimized
                 sizes="(max-width: 768px) 100vw, 768px"
-                className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.01]"
+                className="object-contain object-center transition-transform duration-700 ease-out group-hover:scale-[1.01]"
                 priority
               />
             </div>

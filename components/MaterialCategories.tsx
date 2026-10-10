@@ -78,76 +78,54 @@ export default function MaterialCategories() {
     }
 
     const ctx = gsap.context(() => {
-      const mm = gsap.matchMedia();
+      const track = trackRef.current;
+      const trackWindow = trackWindowRef.current;
+      const section = sectionRef.current;
+      if (!track || !trackWindow || !section) return;
 
-      // Desktop (min-width: 1024px)
-      mm.add("(min-width: 1024px)", () => {
-        const track = trackRef.current;
-        const trackWindow = trackWindowRef.current;
-        const pinContainer = pinContainerRef.current;
-        if (!track || !trackWindow || !pinContainer) return;
+      const calculateScrollDistance = () => {
+        // Calculate exact total track width vs visible container
+        const totalTrackWidth = track.scrollWidth;
+        const visibleWidth = trackWindow.clientWidth;
+        // Add extra padding so the 5th card sits comfortably inside the view
+        return Math.max(0, totalTrackWidth - visibleWidth + 40);
+      };
 
-        // Boxed track calculation
-        const getScrollDistance = () => {
-          return track.scrollWidth - trackWindow.clientWidth + 24;
-        };
+      const scrollDist = calculateScrollDistance();
 
-        const horizontalTween = gsap.to(track, {
-          x: () => -getScrollDistance(),
-          ease: "none",
-          scrollTrigger: {
-            trigger: pinContainer,
-            pin: true,
-            scrub: 1,
-            start: "top top",
-            end: () => `+=${getScrollDistance() * 1.2}`,
-            invalidateOnRefresh: true,
-            anticipatePin: 1,
-          },
-        });
-
-        return () => {
-          horizontalTween.kill();
-        };
+      const horizontalTween = gsap.to(track, {
+        x: () => -calculateScrollDistance(),
+        ease: "none",
+        scrollTrigger: {
+          trigger: section,
+          pin: true,
+          pinSpacing: true,
+          scrub: 1,
+          start: "top top",
+          end: () => `+=${Math.max(calculateScrollDistance() * 2.5, 2500)}`,
+          invalidateOnRefresh: true,
+          anticipatePin: 1,
+        },
       });
 
-      // Tablet (min-width: 768px and max-width: 1023px)
-      mm.add("(min-width: 768px) and (max-width: 1023px)", () => {
-        const track = trackRef.current;
-        const trackWindow = trackWindowRef.current;
-        const pinContainer = pinContainerRef.current;
-        if (!track || !trackWindow || !pinContainer) return;
-
-        const getScrollDistance = () => {
-          return track.scrollWidth - trackWindow.clientWidth + 20;
-        };
-
-        const horizontalTween = gsap.to(track, {
-          x: () => -getScrollDistance(),
-          ease: "none",
-          scrollTrigger: {
-            trigger: pinContainer,
-            pin: true,
-            scrub: 1,
-            start: "top top",
-            end: () => `+=${getScrollDistance() * 1.25}`,
-            invalidateOnRefresh: true,
-            anticipatePin: 1,
-          },
-        });
-
-        return () => {
-          horizontalTween.kill();
-        };
-      });
+      return () => {
+        horizontalTween.kill();
+      };
     }, sectionRef);
 
+    // Refresh triggers after DOM & layout render
     const timeout = setTimeout(() => {
       ScrollTrigger.refresh();
-    }, 200);
+    }, 400);
+
+    const handleResize = () => {
+      ScrollTrigger.refresh();
+    };
+    window.addEventListener("resize", handleResize);
 
     return () => {
       clearTimeout(timeout);
+      window.removeEventListener("resize", handleResize);
       ctx.revert();
     };
   }, []);
@@ -156,13 +134,13 @@ export default function MaterialCategories() {
     <section
       id="materials"
       ref={sectionRef}
-      className="py-10 md:py-14 bg-white text-[#202522] relative"
+      className="w-full bg-white text-[#202522] relative flex flex-col justify-center overflow-hidden"
     >
-      {/* Boxed Fit Container - Max Width 7XL with premium framing */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Boxed Fit Container */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 w-full">
         <div
           ref={pinContainerRef}
-          className="rounded-3xl bg-[#F8F8F5] border border-[#E8EAE6] p-6 sm:p-10 lg:p-12 shadow-sm overflow-hidden flex flex-col justify-between"
+          className="rounded-3xl bg-[#F8F8F5] border border-[#E8EAE6] p-5 sm:p-8 lg:p-10 shadow-sm overflow-hidden flex flex-col"
         >
           {/* Box Header - Stable throughout scrolling */}
           <div className="w-full flex-shrink-0">
@@ -200,11 +178,11 @@ export default function MaterialCategories() {
           {/* Boxed Horizontal Track Viewport */}
           <div
             ref={trackWindowRef}
-            className="w-full my-8 overflow-x-auto lg:overflow-hidden no-scrollbar"
+            className="w-full my-6 sm:my-8 overflow-hidden no-scrollbar"
           >
             <div
               ref={trackRef}
-              className="flex items-stretch gap-6 flex-nowrap w-max"
+              className="flex items-stretch gap-4 sm:gap-6 flex-nowrap w-max"
             >
               {cardsData.map((card) => (
                 <div
