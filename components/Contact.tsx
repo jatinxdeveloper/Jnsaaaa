@@ -341,24 +341,15 @@ export default function Contact() {
                   )}
                 </div>
 
-                {/* Submit CTA & WhatsApp Direct Action */}
-                <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
+                {/* Submit CTA */}
+                <div className="pt-2">
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full sm:flex-1 inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl bg-[#25a244] hover:bg-[#1e8236] text-white font-semibold text-xs sm:text-sm transition-all shadow-lg shadow-[#25a244]/25 hover:shadow-xl hover:shadow-[#25a244]/35 disabled:opacity-50 active:scale-98 group min-h-[48px]"
+                    className="w-full inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl bg-[#25a244] hover:bg-[#1e8236] text-white font-semibold text-xs sm:text-sm transition-all shadow-lg shadow-[#25a244]/25 hover:shadow-xl hover:shadow-[#25a244]/35 disabled:opacity-50 active:scale-98 group min-h-[48px]"
                   >
                     <Send className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
                     <span>{isSubmitting ? "Connecting to WhatsApp..." : "Submit & Connect on WhatsApp"}</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={handleWhatsAppRedirect}
-                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3.5 sm:py-4 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-xs sm:text-sm border border-white/20 transition-all active:scale-98 group min-h-[48px]"
-                  >
-                    <WhatsAppIcon className="w-4 h-4 text-[#38b000] transition-transform group-hover:scale-110 flex-shrink-0" />
-                    <span>Instant WhatsApp Chat</span>
                   </button>
                 </div>
 
