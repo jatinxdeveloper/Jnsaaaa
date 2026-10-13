@@ -7,7 +7,9 @@ import MaterialCategories from "@/components/MaterialCategories";
 import RecyclablesPicked from "@/components/RecyclablesPicked";
 import OurApproach from "@/components/OurApproach";
 import About from "@/components/About";
+import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 
 export default function Home() {
   return (
@@ -39,8 +41,14 @@ export default function Home() {
       {/* Section 7 — About JNSAAAA */}
       <About />
 
+      {/* Section 8 — Commercial Inquiry & Contact */}
+      <Contact />
+
       {/* Section 9 — Minimal Footer */}
       <Footer />
+
+      {/* Floating WhatsApp Quick Action Button */}
+      <FloatingWhatsApp />
     </main>
   );
 }

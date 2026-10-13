@@ -91,8 +91,6 @@ export default function MaterialCategories() {
         return Math.max(0, totalTrackWidth - visibleWidth + 40);
       };
 
-      const scrollDist = calculateScrollDistance();
-
       const horizontalTween = gsap.to(track, {
         x: () => -calculateScrollDistance(),
         ease: "none",

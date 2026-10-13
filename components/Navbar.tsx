@@ -3,7 +3,17 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Menu, X, ArrowRight } from "lucide-react";
+import { Menu, X, ArrowRight, Phone } from "lucide-react";
+import {
+  CONTACT_PHONE,
+  CONTACT_PHONE_TEL,
+  WHATSAPP_BASE_URL,
+  INSTAGRAM_URL,
+  FACEBOOK_URL,
+  WhatsAppIcon,
+  InstagramIcon,
+  FacebookIcon,
+} from "./SocialIcons";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -37,6 +47,7 @@ export default function Navbar() {
     { name: "About Us", href: "#about" },
     { name: "Materials We Handle", href: "#materials" },
     { name: "Our Process", href: "#approach" },
+    { name: "Contact", href: "#contact" },
   ];
 
   return (
@@ -122,15 +133,49 @@ export default function Navbar() {
               ))}
             </div>
 
-            <div className="pt-4 border-t border-gray-100 flex flex-col gap-3">
+            <div className="pt-4 border-t border-gray-100 flex flex-col gap-2.5">
               <a
-                href="#materials"
+                href={`${WHATSAPP_BASE_URL}?text=${encodeURIComponent("Hello JNSAAAA Recycle, I am contacting you from the website.")}`}
+                target="_blank"
+                rel="noopener noreferrer"
                 onClick={() => setMobileMenuOpen(false)}
-                className="w-full flex items-center justify-center gap-2 px-5 py-3.5 rounded-full bg-[#032b17] text-white font-semibold text-sm text-center hover:bg-[#25a244] transition-colors shadow-sm"
+                className="w-full flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-[#25D366] hover:bg-[#20bd5a] text-white font-semibold text-sm text-center transition-colors shadow-sm min-h-[44px]"
               >
-                <span>Explore Materials</span>
-                <ArrowRight className="w-4 h-4" />
+                <WhatsAppIcon className="w-4 h-4" />
+                <span>Chat on WhatsApp</span>
               </a>
+
+              <a
+                href={CONTACT_PHONE_TEL}
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-full flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-[#e8f5e9] text-[#032b17] hover:bg-[#c8e6c9] font-semibold text-sm text-center transition-colors border border-[#c8e6c9] min-h-[44px]"
+              >
+                <Phone className="w-4 h-4 text-[#25a244]" />
+                <span>Call {CONTACT_PHONE}</span>
+              </a>
+
+              {/* Social Channels in Drawer */}
+              <div className="pt-2 flex items-center justify-center gap-3">
+                <a
+                  href={INSTAGRAM_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-gray-600 hover:text-pink-600 transition-colors"
+                >
+                  <InstagramIcon className="w-3.5 h-3.5 text-pink-600" />
+                  <span>Instagram</span>
+                </a>
+                <span className="text-gray-300">·</span>
+                <a
+                  href={FACEBOOK_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-gray-600 hover:text-blue-600 transition-colors"
+                >
+                  <FacebookIcon className="w-3.5 h-3.5 text-[#1877F2]" />
+                  <span>Facebook</span>
+                </a>
+              </div>
             </div>
           </div>
         </div>

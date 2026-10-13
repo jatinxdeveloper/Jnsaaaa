@@ -2,8 +2,8 @@
 
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
-import Link from "next/link";
-import { ArrowRight, Building2, Phone, Recycle, Sparkles } from "lucide-react";
+import { ArrowRight, Building2, Phone, Sparkles } from "lucide-react";
+import { WHATSAPP_BASE_URL, WhatsAppIcon, CONTACT_PHONE } from "./SocialIcons";
 
 interface FloatingItemConfig {
   id: string;
@@ -215,6 +215,15 @@ export default function Hero() {
 
   const handleQuickLead = (e: React.FormEvent) => {
     e.preventDefault();
+    const message = encodeURIComponent(
+      `Hello JNSAAAA Recycle,\n\nI want to discuss industrial recycling requirements.\n` +
+      `Business: ${businessName.trim() || "Not provided"}\n` +
+      `Contact Info: ${contactInfo.trim() || "Not provided"}`
+    );
+
+    // Redirect to WhatsApp on +91 8920256852
+    window.open(`${WHATSAPP_BASE_URL}?text=${message}`, "_blank");
+
     const contactSection = document.getElementById("contact");
     if (contactSection) {
       const nameInput = document.getElementById("fullName") as HTMLInputElement;
@@ -276,55 +285,56 @@ export default function Hero() {
               <div className="relative p-2 sm:p-3 rounded-2xl sm:rounded-full border-2 border-[#bbf7d0]/80 bg-[#e8f5e9]/30 shadow-sm backdrop-blur-sm">
                 
                 {/* Floating Top Pill Tag */}
-                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3 sm:px-4 py-0.5 rounded-full bg-[#c7f9cc] border border-[#86efac] text-[#032b17] text-[11px] sm:text-xs font-semibold tracking-wide shadow-xs whitespace-nowrap">
+                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3 sm:px-4 py-0.5 rounded-full bg-[#c7f9cc] border border-[#86efac] text-[#032b17] text-[10px] sm:text-xs font-semibold tracking-wide shadow-xs whitespace-nowrap max-w-[92%] truncate text-center">
                   Tell Us What You Need to Recycle
                 </div>
 
                 {/* Inner Form with two input capsules & submit circle */}
                 <form
                   onSubmit={handleQuickLead}
-                  className="bg-white rounded-xl sm:rounded-full p-1.5 sm:p-2 border border-gray-200/90 shadow-sm flex flex-col sm:flex-row items-center gap-2"
+                  className="bg-white rounded-xl sm:rounded-full p-2 sm:p-2 border border-gray-200/90 shadow-sm flex flex-col sm:flex-row items-stretch sm:items-center gap-2"
                 >
                   {/* Business Name Input */}
-                  <div className="flex-1 w-full flex items-center gap-3 px-4 py-2.5 rounded-lg sm:rounded-full border border-gray-100 focus-within:border-[#25a244] bg-[#fafcfa] transition-colors">
+                  <div className="flex-1 w-full flex items-center gap-3 px-3.5 sm:px-4 py-2.5 sm:py-2.5 rounded-lg sm:rounded-full border border-gray-100 focus-within:border-[#25a244] bg-[#fafcfa] transition-colors">
                     <Building2 className="w-4 h-4 text-gray-400 flex-shrink-0" />
                     <input
                       type="text"
                       value={businessName}
                       onChange={(e) => setBusinessName(e.target.value)}
                       placeholder="Your business name"
-                      className="w-full bg-transparent text-xs sm:text-sm text-gray-800 placeholder-gray-400 focus:outline-none"
+                      className="w-full bg-transparent text-base sm:text-sm text-gray-800 placeholder-gray-400 focus:outline-none"
                     />
                   </div>
 
                   {/* Phone / Email Input */}
-                  <div className="flex-1 w-full flex items-center gap-3 px-4 py-2.5 rounded-lg sm:rounded-full border border-gray-100 focus-within:border-[#25a244] bg-[#fafcfa] transition-colors">
+                  <div className="flex-1 w-full flex items-center gap-3 px-3.5 sm:px-4 py-2.5 sm:py-2.5 rounded-lg sm:rounded-full border border-gray-100 focus-within:border-[#25a244] bg-[#fafcfa] transition-colors">
                     <Phone className="w-4 h-4 text-gray-400 flex-shrink-0" />
                     <input
                       type="text"
                       value={contactInfo}
                       onChange={(e) => setContactInfo(e.target.value)}
                       placeholder="Phone number or email"
-                      className="w-full bg-transparent text-xs sm:text-sm text-gray-800 placeholder-gray-400 focus:outline-none"
+                      className="w-full bg-transparent text-base sm:text-sm text-gray-800 placeholder-gray-400 focus:outline-none"
                     />
                   </div>
 
                   {/* Submit Button */}
                   <button
                     type="submit"
-                    className="w-full sm:w-11 h-10 sm:h-11 rounded-lg sm:rounded-full bg-[#032b17] hover:bg-[#25a244] text-white flex items-center justify-center gap-2 text-xs sm:text-sm font-medium transition-all duration-200 shadow-md group flex-shrink-0 py-2 sm:py-0"
-                    aria-label="Submit lead and discuss requirements"
+                    className="w-full sm:w-auto px-5 h-12 sm:h-11 rounded-lg sm:rounded-full bg-[#032b17] hover:bg-[#25a244] text-white flex items-center justify-center gap-2 text-xs sm:text-sm font-semibold transition-all duration-200 shadow-md active:scale-98 group flex-shrink-0 min-h-[46px]"
+                    aria-label={`Connect via WhatsApp on ${CONTACT_PHONE}`}
                   >
-                    <span className="sm:hidden font-semibold">Get in Touch</span>
-                    <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:translate-x-0.5" />
+                    <WhatsAppIcon className="w-4 h-4 text-[#38b000] group-hover:text-white transition-colors flex-shrink-0" />
+                    <span>Connect on WhatsApp</span>
+                    <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 flex-shrink-0" />
                   </button>
                 </form>
 
               </div>
 
               {/* Sub-lead footnote */}
-              <p className="text-[11px] sm:text-xs text-[#737873] mt-3 font-medium">
-                For industrial suppliers, businesses and material partners
+              <p className="text-[11px] sm:text-xs text-[#737873] mt-2.5 sm:mt-3 font-medium flex items-center justify-center gap-1.5 text-center px-2">
+                <span>Instant WhatsApp redirect to <strong className="text-[#032b17]">{CONTACT_PHONE}</strong> for material partners</span>
               </p>
             </div>
 

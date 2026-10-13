@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+
 import { Building2, MapPin, FileCheck2, ShieldCheck, Scale, CheckCircle2 } from "lucide-react";
 
 export default function About() {

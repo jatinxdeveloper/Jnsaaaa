@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { CheckCircle2, ArrowRight, Network, Layers, RefreshCw } from "lucide-react";
+import { ArrowRight, Network, Layers } from "lucide-react";
 
 export default function Introduction() {
   return (

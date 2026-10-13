@@ -1,6 +1,6 @@
 "use client";
 
-import { Share2, MessageSquare, CheckCircle, ArrowRight } from "lucide-react";
+import { Share2, MessageSquare, CheckCircle } from "lucide-react";
 
 interface StepProps {
   number: string;
@@ -61,7 +61,7 @@ export default function OurApproach() {
           <div className="hidden md:block absolute top-1/2 left-12 right-12 h-[2px] bg-gradient-to-r from-[#25a244]/20 via-[#25a244] to-[#25a244]/20 -translate-y-8 z-0" />
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
-            {steps.map((step, idx) => (
+            {steps.map((step) => (
               <div
                 key={step.number}
                 className="bg-white rounded-2xl p-8 border border-gray-200/90 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group hover:-translate-y-1"
